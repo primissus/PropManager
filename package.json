@@ -1,7 +1,7 @@
 {
-  "name": "PropManager",
+  "name": "@hyperblob/propmanager",
   "version": "1.0.0",
-  "description": "",
+  "description": "PropManager is a javascript library that allows you to **set** an **get** complex paths in an object.",
   "main": "index.js",
   "scripts": {
     "test": "mocha"
@@ -11,8 +11,8 @@
     "url": "git+https://github.com/HyperBlob/PropManager.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "HyperBlob",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/HyperBlob/PropManager/issues"
   },
