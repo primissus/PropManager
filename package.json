@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "PropManager is a javascript library that allows you to **set** an **get** complex paths in an object.",
   "main": "index.js",
+  "private": false,
   "scripts": {
     "test": "mocha"
   },
