@@ -1,6 +1,13 @@
 # PropManager
 PropManager is a javascript library that allows you to **set** an **get** complex paths in an object.
 
+# Install
+PropManager can be installed from npm
+
+```
+npm i @hyperblob/propmanager
+```
+
 # Syntax
 
 PropManager supports two types of complex paths, **map** & **array** each of them has its own syntax operator, and they can be chained (see the examples below).
@@ -60,7 +67,7 @@ When using complex operator:
 			c: 'This is the value 2'
 		}
 	};
-    PropManager.get(obj, 'a*', 'The new value');// returns true, obj.a.b === 'The new value' && obj.a.c === 'The new value'
+    PropManager.set(obj, 'a*', 'The new value');// returns true, obj.a.b === 'The new value' && obj.a.c === 'The new value'
 ```
 When using complex operator with an iteratee:
 ```
@@ -70,7 +77,7 @@ When using complex operator with an iteratee:
 			c: 'This is the value 2'
 		}
 	};
-    PropManager.get(obj, 'a*', 'The new value', function (setVal, currentVal) {
+    PropManager.set(obj, 'a*', 'The new value', function (setVal, currentVal) {
 	    return currentVal + ', ' + setVal + ', Added text';
     });// returns true, obj.a.b === 'This is the value 1, The new value, Added text' && obj.a.c === 'This is the value 1, The new value, Added text'
 ```
