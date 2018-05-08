@@ -142,4 +142,8 @@ PropManager.prototype.setDeep = function (obj, path, val, iteratee) {
 
 };
 
+PropManager.prototype.copy = function (value) {
+  return JSON.parse(JSON.stringify(value));
+};
+
 module.exports = new PropManager();

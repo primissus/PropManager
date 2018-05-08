@@ -82,6 +82,9 @@ When using complex operator with an iteratee:
     });// returns true, obj.a.b === 'This is the value 1, The new value, Added text' && obj.a.c === 'This is the value 1, The new value, Added text'
 ```
 
+## copy(value): any
+Returns a copy of the value.
+
 # Additional
 The complex operator can be chained like:
 ```
