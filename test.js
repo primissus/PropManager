@@ -73,6 +73,10 @@ describe('PropManager', () => {
       expect(JSON.stringify(PropManager.get(obj, 'a.b.c.f[].h*'))).equal(JSON.stringify(['1', '2', '3', '4', '5', '6', '7', '8', '9']));
     });
 
+    it('should get the correct value at array position from the path a.b.c.f[0].g', () => {
+      expect(PropManager.get(obj, 'a.b.c.f[0].g')).equal('g1');
+    });
+
   });
 
   describe('set', () => {
@@ -99,13 +103,30 @@ describe('PropManager', () => {
       expect(JSON.stringify(PropManager.get(objClone, 'a.b.c.f[].h*'))).equal(JSON.stringify(['ut', 'ut', 'ut', 'ut', 'ut', 'ut', 'ut', 'ut', 'ut']));
     });
 
+    it('should set path a.b.c.f[0].g to "g2"', () => {
+      PropManager.set(objClone, 'a.b.c.f[0].g', 'g2');
+      expect(PropManager.get(objClone, 'a.b.c.f[0].g')).equal('g2');
+    });
+
   });
 
   describe('unset', () => {
+    it('should unset path a[]', () => {
+      let tmpObj = {a: [{a: 1, b: true}, {a: 2, b: true}], b: true}
+      PropManager.unset(tmpObj, 'a[]');
+      expect(tmpObj).to.deep.equal({a: [], b: true});
+    });
+
     it('should unset path a[].b', () => {
       let tmpObj = {a: [{a: 1, b: true}, {a: 2, b: true}], b: true}
       PropManager.unset(tmpObj, 'a[].b');
       expect(tmpObj).to.deep.equal({a: [{a: 1}, {a: 2}], b: true});
+    });
+
+    it('should unset path a[].b[]', () => {
+      let tmpObj = {a: [{a: 1, b: [1,2,3]}, {a: 2}], b: true};
+      PropManager.unset(tmpObj, 'a[].b[]');
+      expect(tmpObj).to.deep.equal({a: [{a: 1, b: []}, {a: 2}], b: true});
     });
 
     it('should unset path a[0].a', () => {
@@ -117,7 +138,13 @@ describe('PropManager', () => {
     it('should unset path b*.a', () => {
       let tmpObj = {a: false, b: {a: {a:1, b: true}, b: {a: 1, b: true}}};
       PropManager.unset(tmpObj, 'b*.a');
-      expect(tmpObj).to.deep.equal({a: false, b: {a: {b: true}, b: {b: true}}});
+      expect(tmpObj).to.deep.equal({ a: false, b: { a: { b: true }, b: { b: true } } });
+    });
+
+    it('should unset path b*', () => {
+      let tmpObj = {a: false, b: {a: {a:1, b: true}, b: {a: 1, b: true}}};
+      PropManager.unset(tmpObj, 'b*');
+      expect(tmpObj).to.deep.equal({ a: false, b: {} });
     });
   });
 

@@ -176,10 +176,12 @@ PropManager.prototype.unsetDeep = function (obj, path) {
       if (matched[0] === '*' || matched[0] === '[]') {
 
         if (matchedIsAtEnd) {
-
-          _.forEach(propVal, (itemVal, itemName) => {
-            success = _.unset(propVal, itemName);
-          });
+          
+          if (matched[0] === '*' && _.has(obj, propPath)) {
+            _.set(obj, propPath, {});
+          } else if (matched[0] === '[]' && _.has(obj, propPath)) {
+            _.set(obj, propPath, []);
+          }
 
         } else {
 

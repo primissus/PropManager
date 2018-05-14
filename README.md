@@ -47,7 +47,7 @@ When using a complex operator:
 ```
 
 ## set(obj, path, value, [iteratee](https://lodash.com/docs/4.17.5#iteratee)=[identity](https://lodash.com/docs/4.17.5#identity)): boolean
-The get method as its name tells, **sets** the value of the specified path.
+The set method as its name tells, **sets** the value of the specified path.
 The [**iteratee**](https://lodash.com/docs/4.17.5#iteratee) parameter is a function that can modify the set value with the current value, its default value is an  [*identity function*](https://lodash.com/docs/4.17.5#identity).
 Returns whether or not was possible to set the values.
 ```
@@ -80,6 +80,35 @@ When using complex operator with an iteratee:
     PropManager.set(obj, 'a*', 'The new value', function (setVal, currentVal) {
 	    return currentVal + ', ' + setVal + ', Added text';
     });// returns true, obj.a.b === 'This is the value 1, The new value, Added text' && obj.a.c === 'This is the value 1, The new value, Added text'
+```
+
+## unset(obj, path)
+The unset method **deletes** the property of the specified path.
+
+```
+const obj = {
+	a: {
+		b: 'This is the value 1',
+		c: 'This is the value 2'
+	}
+};
+PropManager.unset(obj, 'a.b');// returns true
+
+console.log(obj); // {a: {c: 'This is the value 2'}}
+```
+
+When using complex operator:
+
+```
+const obj = {
+	a: {
+		b: 'This is the value 1',
+		c: 'This is the value 2'
+	}
+};
+PropManager.unset(obj, 'a*');// returns true
+
+console.log(obj); // {a: {}}
 ```
 
 ## copy(value): any
