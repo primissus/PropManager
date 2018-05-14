@@ -101,6 +101,26 @@ describe('PropManager', () => {
 
   });
 
+  describe('unset', () => {
+    it('should unset path a[].b', () => {
+      let tmpObj = {a: [{a: 1, b: true}, {a: 2, b: true}], b: true}
+      PropManager.unset(tmpObj, 'a[].b');
+      expect(tmpObj).to.deep.equal({a: [{a: 1}, {a: 2}], b: true});
+    });
+
+    it('should unset path a[0].a', () => {
+      let tmpObj = {a: [{a: 1, b: true}, {a: 2, b: true}], b: true}
+      PropManager.unset(tmpObj, 'a[0].a');
+      expect(tmpObj).to.deep.equal({a: [{b: true}, {a: 2, b: true}], b: true});
+    });
+
+    it('should unset path b*.a', () => {
+      let tmpObj = {a: false, b: {a: {a:1, b: true}, b: {a: 1, b: true}}};
+      PropManager.unset(tmpObj, 'b*.a');
+      expect(tmpObj).to.deep.equal({a: false, b: {a: {b: true}, b: {b: true}}});
+    });
+  });
+
 });
 
 function clone(obj) {

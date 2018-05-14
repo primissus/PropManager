@@ -21,7 +21,6 @@ PropManager.prototype.getDeep = function (obj, path) {
   }
 
   const matchingOpsRegexp = /\*|\[]|^\./;
-  const beginningOpsRegexp = /^(\*|\[]|\.)/;
   let matched = path.match(matchingOpsRegexp);
   let data = [];
 
@@ -145,5 +144,72 @@ PropManager.prototype.setDeep = function (obj, path, val, iteratee) {
 PropManager.prototype.copy = function (value) {
   return JSON.parse(JSON.stringify(value));
 };
+
+PropManager.prototype.unset = function (obj, path) {
+  if (/\*|\[]/.test(path)) {
+    return this.unsetDeep(obj, path);
+  }
+
+  return _.unset(obj, path);
+}
+
+PropManager.prototype.unsetDeep = function (obj, path) {
+  if (!path || !path.length) {
+    return true;
+  }
+
+  const matchingOpsRegexp = /\*|\[]|^\./;
+  const beginningOpsRegexp = /^(\*|\[]|\.)/;
+  let matched = path.match(matchingOpsRegexp);
+  let success = true;
+
+  if (matched) {
+
+    const matchedIsAtEnd = matched.index + matched[0].length >= path.length;
+    let propPath = path.slice(0, matched.index);
+
+    path = path.slice(matched.index + matched[0].length);
+
+    let propVal = (propPath === '' ? obj : _.get(obj, propPath));
+
+    if (propVal) {
+      if (matched[0] === '*' || matched[0] === '[]') {
+
+        if (matchedIsAtEnd) {
+
+          _.forEach(propVal, (itemVal, itemName) => {
+            success = _.unset(propVal, itemName);
+          });
+
+        } else {
+
+          _.forEach(propVal, (itemVal, itemPath) => {
+            success = this.unsetDeep(itemVal, path) && success;
+          });
+
+        }
+
+      } else {
+
+        success = this.unsetDeep(propVal, path);
+
+      }
+
+      while(matched = path.match(beginningOpsRegexp)) {
+        path = path.slice(matched.index + matched[1].length);
+      }
+    }
+
+    if (path.search(matchingOpsRegexp) > -1) {
+      success = this.unsetDeep(propVal || obj, path);
+    }
+
+  } else {
+
+    success = _.unset(obj, path);
+
+  }
+  return success;
+}
 
 module.exports = new PropManager();
